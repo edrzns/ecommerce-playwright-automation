@@ -8,7 +8,7 @@ test.describe("User registration", () => {
     const randomFullName = `${randomFirstName} ${randomLastName}`;
     const randomEmail = `${faker.internet.username()}_${Date.now()}@example.com`;
 
-    await page.goto("https://automationexercise.com/");
+    await page.goto("/");
     await page.getByRole("button", { name: "Consent" }).click();
     await page.getByRole("link", { name: "Signup / Login" }).click();
     await page.getByRole("textbox", { name: "Name" }).fill(randomFullName);
