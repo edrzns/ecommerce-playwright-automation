@@ -1,68 +1,36 @@
 import { test, expect } from '@playwright/test';
-import { faker } from '@faker-js/faker';
 
-const randomSex = faker.person.sex();
-const randomFirstName = faker.person.firstName();
-const randomLastName = faker.person.lastName();
-const randomBirthDate = faker.date.birthdate({
-  mode: 'age',
-  min: 18,
-  max: 65,
-});
-const day = randomBirthDate.getDate().toString();
-const month = (randomBirthDate.getMonth() + 1).toString();
-const year = randomBirthDate.getFullYear().toString();
 
-const randomFullName = `${randomFirstName} ${randomLastName}`;
-const randomEmail = `${randomFirstName}.${randomLastName}_${Date.now()}@example.com`;
-const randomPassword = faker.internet.password();
-const randomCompany = faker.company.name();
-const randomCity = faker.location.city();
-const randomAddress = faker.location.streetAddress();
-const randomCountryState = faker.location.state();
-const randomZipCode = faker.location.zipCode();
-const randomPhoneNumber = faker.phone.number({ style: 'international' });
+test.describe('User Registration', () => {
+  test('should register a new user successfully', async ({ page }) => {
+    // 1. Launch browser
+    // 2. Navigate to url 'http://automationexercise.com'
+    // 3. Verify that home page is visible successfully
+    // 4. Click on 'Signup / Login' button
+    // 5. Verify 'New User Signup!' is visible
+    // 6. Enter name and email address
+    // 7. Click 'Signup' button
+    // 8. Verify that 'ENTER ACCOUNT INFORMATION' is visible
+    // 9. Fill details: Title, Name, Email, Password, Date of birth
+    // 10. Select checkbox 'Sign up for our newsletter!'
+    // 11. Select checkbox 'Receive special offers from our partners!'
+    // 12. Fill details: First name, Last name, Company, Address, Address2, Country, State, City, Zipcode, Mobile Number
+    // 13. Click 'Create Account button'
+    // 14. Verify that 'ACCOUNT CREATED!' is visible
+    // 15. Click 'Continue' button
+    // 16. Verify that 'Logged in as username' is visible
+    // 17. Click 'Delete Account' button
+    // 18. Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
+  });
 
-test.describe('User registration', () => {
-  test('should register a new user successfully and show confirmation message', async ({
-    page,
-  }) => {
-    await page.goto('/');
-    await page.getByRole('button', { name: 'Consent' }).click();
-    await page.getByRole('link', { name: 'Signup / Login' }).click();
-    await page.getByRole('textbox', { name: 'Name' }).fill(randomFullName);
-    await page
-      .locator('form')
-      .filter({ hasText: 'Signup' })
-      .getByPlaceholder('Email Address')
-      .fill(randomEmail);
-    await page.getByRole('button', { name: 'Signup' }).click();
-
-    if (randomSex === 'male') {
-      await page.getByRole('radio', { name: 'Mr.' }).check();
-    } else {
-      await page.getByRole('radio', { name: 'Mrs.' }).check();
-    }
-
-    await page.getByRole('textbox', { name: 'Password *' }).fill(randomPassword);
-    await page.locator('#days').selectOption(day);
-    await page.locator('#months').selectOption(month);
-    await page.locator('#years').selectOption(year);
-    await page.getByRole('textbox', { name: 'First name *' }).fill(randomFirstName);
-    await page.getByRole('textbox', { name: 'Last name *' }).fill(randomLastName);
-    await page.getByRole('textbox', { name: 'Company', exact: true }).fill(randomCompany);
-    await page.getByRole('textbox', { name: 'Address * (Street address, P.' }).fill(randomAddress);
-    await page.getByLabel('Country *').selectOption('Canada');
-    await page.getByRole('textbox', { name: 'State *' }).fill(randomCountryState);
-    await page.getByRole('textbox', { name: 'City * Zipcode *' }).fill(randomCity);
-    await page.locator('#zipcode').fill(randomZipCode);
-    await page.getByRole('textbox', { name: 'Mobile Number *' }).fill(randomPhoneNumber);
-    await page.getByRole('button', { name: 'Create Account' }).click();
-
-    await expect(page.getByText('Account Created!')).toBeVisible();
-    await page.getByRole('link', { name: 'Continue' }).click();
-    await expect(page.getByText(`Logged in as ${randomFullName}`)).toBeVisible();
-
-    await page.getByRole('link', { name: 'Logout' }).click();
+  test('should display error when registering with an existing email', async ({ page }) => {
+    // 1. Launch browser
+    // 2. Navigate to url 'http://automationexercise.com'
+    // 3. Verify that home page is visible successfully
+    // 4. Click on 'Signup / Login' button
+    // 5. Verify 'New User Signup!' is visible
+    // 6. Enter name and already registered email address
+    // 7. Click 'Signup' button
+    // 8. Verify error 'Email Address already exist!' is visible
   });
 });
