@@ -1,4 +1,3 @@
-// utils/testData.ts
 import { faker } from '@faker-js/faker';
 
 export function generateUniqueEmail(): string {
