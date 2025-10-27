@@ -1,8 +1,14 @@
 import { Page, expect } from '@playwright/test';
-import { SignupPage } from '../pages/signup.page.js';
+import { SignupPage, AccountDetails } from '../pages/signup.page.js';
 import { handleConsent } from '../utils/commonHelpers.js';
 
-export async function createUser(page: Page, name: string, email: string, password: string) {
+export async function createUser(
+  page: Page,
+  name: string,
+  email: string,
+  password: string,
+  accountDetails?: Partial<AccountDetails>
+) {
   await page.goto('/');
   await handleConsent(page);
 
@@ -16,7 +22,7 @@ export async function createUser(page: Page, name: string, email: string, passwo
 
   await expect(page.getByText('Enter Account Information')).toBeVisible();
 
-  await regPage.fillAccountDetails(password, {
+  const defaultDetails = {
     firstName: name.split(' ')[0],
     lastName: name.split(' ')[1] || 'User',
     company: 'Test Company',
@@ -27,7 +33,9 @@ export async function createUser(page: Page, name: string, email: string, passwo
     city: 'Toronto',
     zipcode: 'M5H2N2',
     mobile: '+15551234567',
-  });
+  };
+
+  await regPage.fillAccountDetails(password, { ...defaultDetails, ...accountDetails });
   await regPage.submitAccount();
 
   // Wait for account creation

@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
-interface AccountDetails {
+export interface AccountDetails {
   firstName: string;
   lastName: string;
   company?: string;
