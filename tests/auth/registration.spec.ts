@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { SignupPage } from 'pages/signup.page.js';
 import { handleConsent } from 'utils/commonHelpers.js';
-import { generateTestUser } from 'utils/testData.js';
+import { generateTestUser, generateAccountDetails } from 'utils/testData.js';
 
 test.describe('User Registration', () => {
   test('should register a new user successfully', async ({ page }) => {
@@ -9,6 +9,7 @@ test.describe('User Registration', () => {
     const email = user.email;
     const name = user.name;
     const password = user.password;
+    const account = generateAccountDetails(user);
 
     await page.goto('/');
     await handleConsent(page);
@@ -18,16 +19,7 @@ test.describe('User Registration', () => {
     await regPage.fillSignupForm(name, email);
     await regPage.submitSignup();
 
-    await regPage.fillAccountDetails(password, {
-      firstName: user.name.split(' ')[0],
-      lastName: user.name.split(' ')[1] || 'User',
-      address: user.address,
-      country: 'Canada',
-      state: user.state,
-      city: user.city,
-      zipcode: user.zipcode,
-      mobile: user.zipcode,
-    });
+    await regPage.fillAccountDetails(password, account);
 
     await regPage.submitAccount();
     await page.getByRole('link', { name: 'Continue' }).click();
@@ -44,6 +36,7 @@ test.describe('User Registration', () => {
     const email = user.email;
     const name = user.name;
     const password = user.password;
+    const account = generateAccountDetails(user);
     
     await page.goto('/');
     await handleConsent(page);
@@ -53,21 +46,13 @@ test.describe('User Registration', () => {
     await regPage.fillSignupForm(name, email);
     await regPage.submitSignup();
 
-    await regPage.fillAccountDetails(password, {
-      firstName: user.name.split(' ')[0],
-      lastName: user.name.split(' ')[1] || 'User',
-      address: user.address,
-      country: 'Canada',
-      state: user.state,
-      city: user.city,
-      zipcode: user.zipcode,
-      mobile: user.zipcode,
-    });
+    await regPage.fillAccountDetails(password, account);
 
     await regPage.submitAccount();
     await page.getByRole('link', { name: 'Continue' }).click();
 
     await expect(page.getByText(`Logged in as ${name}`)).toBeVisible();
+    await page.getByRole('link', { name: 'Logout' }).click();
 
     await regPage.goto();
     await regPage.fillSignupForm(name, email);
