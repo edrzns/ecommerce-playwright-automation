@@ -1,13 +1,14 @@
 import { test, expect } from '@playwright/test';
 import { SignupPage } from 'pages/signup.page.js';
-import { createUser } from 'utils/userHelpers.js';
 import { handleConsent } from 'utils/commonHelpers.js';
+import { generateTestUser } from 'utils/testData.js';
 
 test.describe('User Registration', () => {
   test('should register a new user successfully', async ({ page }) => {
-    const email = `user_${Date.now()}@test.com`;
-    const password = 'Test123!';
-    const name = 'John Doe';
+    const user = generateTestUser();
+    const email = user.email;
+    const name = user.name;
+    const password = user.password;
 
     await page.goto('/');
     await handleConsent(page);
@@ -18,14 +19,14 @@ test.describe('User Registration', () => {
     await regPage.submitSignup();
 
     await regPage.fillAccountDetails(password, {
-      firstName: name.split(' ')[0],
-      lastName: name.split(' ')[1] || 'User',
-      address: '123 Test St',
+      firstName: user.name.split(' ')[0],
+      lastName: user.name.split(' ')[1] || 'User',
+      address: user.address,
       country: 'Canada',
-      state: 'Ontario',
-      city: 'Toronto',
-      zipcode: 'M5H2N2',
-      mobile: '+15551234567',
+      state: user.state,
+      city: user.city,
+      zipcode: user.zipcode,
+      mobile: user.zipcode,
     });
 
     await regPage.submitAccount();
@@ -39,10 +40,11 @@ test.describe('User Registration', () => {
   });
 
   test('should display error when registering with an existing email', async ({ page }) => {
-    const email = `user_${Date.now()}@test.com`;
-    const password = 'Test123!';
-    const name = 'John Doe';
-
+    const user = generateTestUser();
+    const email = user.email;
+    const name = user.name;
+    const password = user.password;
+    
     await page.goto('/');
     await handleConsent(page);
     await page.getByRole('link', { name: 'Signup / Login' }).click();
@@ -52,14 +54,14 @@ test.describe('User Registration', () => {
     await regPage.submitSignup();
 
     await regPage.fillAccountDetails(password, {
-      firstName: name.split(' ')[0],
-      lastName: name.split(' ')[1] || 'User',
-      address: '123 Test St',
+      firstName: user.name.split(' ')[0],
+      lastName: user.name.split(' ')[1] || 'User',
+      address: user.address,
       country: 'Canada',
-      state: 'Ontario',
-      city: 'Toronto',
-      zipcode: 'M5H2N2',
-      mobile: '+15551234567',
+      state: user.state,
+      city: user.city,
+      zipcode: user.zipcode,
+      mobile: user.zipcode,
     });
 
     await regPage.submitAccount();

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../../pages/login.page.js';
-import { navigateToHome } from '../../utils/commonHelpers.js';
+import { generateTestUser } from '../../utils/testData.js';
 import { createUser } from '../../utils/userHelpers.js';
 
 test.describe('User Authentication', () => {
@@ -8,25 +8,21 @@ test.describe('User Authentication', () => {
   let testPassword: string;
   let testName: string;
   test.beforeEach(async ({ page }) => {
-    // Create unique user for each test
-    testEmail = `user_${Date.now()}@test.com`;
-    testPassword = 'Test123!';
-    testName = 'John Doe';
+    const user = generateTestUser();
 
-    await createUser(page, testName, testEmail, testPassword);
+    await createUser(page, user.name, user.email, user.password);
     await page.getByRole('link', { name: 'Logout' }).click();
 
-    // Now every test starts on /login page with a fresh user
+    testEmail = user.email;
+    testPassword = user.password;
+    testName = user.name;
   });
+
   test.describe('Login', () => {
     test('should log in user with valid email and password', async ({ page }) => {
       const loginPage = new LoginPage(page);
       await loginPage.login(testEmail, testPassword);
       await loginPage.verifyLoginSuccess(testName);
-
-      // await page.getByRole('link', { name: 'Delete Account' }).click();
-      // await expect(page.getByText('Account Deleted!')).toBeVisible;
-      // await page.getByRole('link', { name: 'Continue' }).click();
     });
 
     test('should show error for invalid email and password', async ({ page }) => {
