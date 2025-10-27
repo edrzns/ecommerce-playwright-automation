@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('User Registration', () => {
-  test.only('should register a new user successfully', async ({ page }) => {
+  test('should register a new user successfully', async ({ page }) => {
     const userEmail = `john.smith_${Date.now()}@example.com`;
     // 1. Launch browser
     // 2. Navigate to url 'http://automationexercise.com'
