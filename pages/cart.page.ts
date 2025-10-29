@@ -10,4 +10,17 @@ export class CartPage {
   async goto() {
     await this.page.goto('/view_cart');
   }
+
+  async getCartItems() {
+    return await this.page.locator('.cart-item').count();
+  }
+
+  async isProductInCart(productName: string) {
+    return await this.page.locator('.cart-item').filter({ hasText: productName }).isVisible();
+  }
+
+  async removeProduct(productName: string) {
+    const item = this.page.locator('.cart-item').filter({ hasText: productName });
+    await item.getByRole('button', { name: 'Remove' }).click();
+  }
 }

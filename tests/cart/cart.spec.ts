@@ -8,7 +8,7 @@ test.describe('Shopping Cart', () => {
 
     await expect(page.getByRole('heading', { name: 'Features Items' })).toBeVisible();
     await page.getByRole('link', { name: 'Products' }).click();
-    await page.locator('div').filter({ hasText: 'Rs. 500 Blue Top Add to cart' }).nth(4).hover();
+    await page.locator('div').filter({ hasText: 'Blue Top' }).nth(4).hover();
     await page.getByText('Add to cart').nth(1).click();
     await page.getByRole('link', { name: 'View Cart' }).click();
 
